@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="sdSNCym0403ZayUR_TuMdNW-XW_dGquPZ_lTyOCF3QA" />
+    <title>Vinzznet - Profesional Discord & Minecraft Setup</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #5865F2;
+            --secondary: #0CCF00;
+            --dark: #1E1F22;
+            --light: #F2F3F5;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: #313338;
+            color: var(--light);
+            overflow-x: hidden;
+        }
+        
+        /* Animasi Loading */
+        .loader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loader {
+            width: 48px;
+            height: 48px;
+            border: 5px solid var(--primary);
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            display: inline-block;
+            animation: rotation 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes rotation {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        /* Animasi Konten */
+        .content-hidden {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease;
+        }
+        
+        .content-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Efek Hover Kartu */
+        .service-card {
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Animasi Tombol */
+        .btn-animate {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-animate:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn-animate:hover:after {
+            left: 100%;
+        }
+        
+        /* Form Animasi */
+        .form-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 5px;
+            color: white;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(88, 101, 242, 0.3);
+        }
+        
+        .floating-label {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: rgba(255,255,255,0.7);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .form-input:focus ~ .floating-label,
+        .form-input:valid ~ .floating-label {
+            top: -20px;
+            left: 0;
+            font-size: 12px;
+            color: var(--primary);
+        }
+        
+        /* Modal Animasi */
+        .modal {
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.9);
+        }
+        
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+        
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        /* Pulse Animation */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loader Animation -->
+    <div class="loader-wrapper" id="loader">
+        <div class="loader"></div>
+        <p class="text-white mt-4">Sedang Memuat...</p>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="bg-[#1E1F22] py-4 px-6 flex justify-between items-center sticky top-0 z-50 shadow-lg content-hidden">
+        <div class="flex items-center">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-[#5865F2] to-[#0CCF00] flex items-center justify-center mr-3">
+                <i class="fab fa-discord text-white"></i>
+            </div>
+            <a href="#" class="text-xl font-bold gradient-text">Vinzznet</a>
+        </div>
+        
+        <div class="hidden md:flex space-x-6">
+            <a href="#home" class="hover:text-[#5865F2] transition">Beranda</a>
+            <a href="#services" class="hover:text-[#5865F2] transition">Layanan</a>
+            <a href="#about" class="hover:text-[#5865F2] transition">Tentang</a>
+            <a href="#pricing" class="hover:text-[#5865F2] transition">Harga</a>
+            <a href="#contact" class="hover:text-[#5865F2] transition">Kontak</a>
+        </div>
+        
+        <div class="flex items-center space-x-4">
+            <button onclick="openModal('loginModal')" class="px-4 py-2 rounded-lg bg-transparent border border-[#5865F2] text-[#5865F2] hover:bg-[#5865F2] hover:text-white transition btn-animate">Masuk</button>
+            <button onclick="openModal('registerModal')" class="px-4 py-2 rounded-lg bg-[#5865F2] text-white hover:bg-[#4752C4] transition btn-animate">Daftar</button>
+            
+            <button id="mobileMenuButton" class="md:hidden text-white focus:outline-none">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden bg-[#1E1F22] absolute w-full z-40 py-4 px-6 shadow-lg">
+        <div class="flex flex-col space-y-4">
+            <a href="#home" class="hover:text-[#5865F2] transition">Beranda</a>
+            <a href="#services" class="hover:text-[#5865F2] transition">Layanan</a>
+            <a href="#about" class="hover:text-[#5865F2] transition">Tentang</a>
+            <a href="#pricing" class="hover:text-[#5865F2] transition">Harga</a>
+            <a href="#contact" class="hover:text-[#5865F2] transition">Kontak</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex flex-col justify-center items-center text-center px-6 relative overflow-hidden content-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-[#5865F2]/20 to-[#0CCF00]/20 z-0"></div>
+        
+        <div class="relative z-10 max-w-4xl mx-auto">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6">
+                Setup <span class="gradient-text">Discord</span> & <br>
+                <span class="gradient-text">Minecraft</span> Profesional
+            </h1>
+            
+            <p class="text-lg md:text-xl mb-10 text-gray-300">
+                Layanan setup server Discord dan Minecraft premium oleh tim profesional. 
+                Jadikan server Anda lebih menarik dengan fitur lengkap dan tampilan eksklusif!
+            </p>
+            
+            <div class="flex flex-wrap justify-center gap-4">
+                <button onclick="openModal('registerModal')" class="px-8 py-3 rounded-lg bg-[#5865F2] text-white font-medium hover:bg-[#4752C4] transition btn-animate pulse">
+                    Mulai Sekarang <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+                <button onclick="window.location.href='#services'" class="px-8 py-3 rounded-lg bg-transparent border border-white text-white font-medium hover:bg-white hover:text-[#1E1F22] transition btn-animate">
+                    Jelajahi Layanan
+                </button>
+            </div>
+        </div>
+        
+        <div class="mt-16 relative z-10 flex justify-center">
+            <img src="https://images.unsplash.com/photo-1639762681057-408e52192e55?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2232&q=80" alt="Dashboard panel kontrol server Discord dan Minecraft modern dengan antarmuka pengguna yang bersih" class="rounded-xl shadow-2xl w-full max-w-4xl">
+        </div>
+        
+        <div class="absolute bottom-10 left-0 right-0 flex justify-center z-10 animate-bounce">
+            <a href="#services" class="text-white text-2xl">
+                <i class="fas fa-chevron-down"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 px-6 bg-[#2B2D31] content-hidden">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Layanan Kami</h2>
+                <p class="text-gray-300 max-w-2xl mx-auto">
+                    Kami menyediakan berbagai layanan setup profesional untuk Discord dan Minecraft.
+                    Pilih paket sesuai kebutuhan Anda!
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Discord Setup Package -->
+                <div class="service-card bg-[#1E1F22] rounded-xl p-8 shadow-lg">
+                    <div class="w-16 h-16 rounded-full bg-[#5865F2] flex items-center justify-center mb-6 mx-auto overflow-hidden">
+                        <img src="https://images-eds-ssl.xboxlive.com/image?url=4rt9.lXDC4H_93laV1_eHHFT949fUipzkiFOBH3fAiZZUCdYojwUyX2aTonS1aIwMrx6NUIsHfUHSLzjGJFxxsG72wAo9EWJR4yQWyJJaDaK1XdUso6cUMpI9hAdPUU_FNs11cY1X284vsHrnWtRw7oqRpN1m9YAg21d_aNKnIo-&format=source&h=210">
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 text-center">Setup Server Discord</h3>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-[#5865F2] mt-1 mr-2"></i>
+                            <span>Channel & Kategori Terorganisir</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-[#5865F2] mt-1 mr-2"></i>
+                            <span>Role & Permission System</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-[#5865F2] mt-1 mr-2"></i>
+                            <span>Custom Welcome & Auto-Mod</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-[#5865F2] mt-1 mr-2"></i>
+                            <span>Music,Fun Bots dan Games bot</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-[#5865F2] mt-1 mr-2"></i>
+                            <span>Dashboard Kontrol Bot</span>
+                        </li>
+                    </ul>
+                    <div class="text-center mb-6">
+                        <span class="text-2xl font-bold">Mulai dari</span>
+                        <div class="text-4xl font-bold gradient-text">Rp 100.000</div>
+                    </div>
+                    <button onclick="openModal('orderModal', 'Discord Setup')" class="w-full py-3 bg-[#5865F2] hover:bg-[#4752C4] text-white rounded-lg transition btn-animate">Pesan Sekarang</button>
+                </div>
+                
+                <!-- Minecraft Setup Package -->
+                <div class="service-card bg-[#1E1F22] rounded-xl p-8 shadow-lg transform scale-105 z-10">
+                    <div class="w-16 h-16 rounded-full bg-[#0CCF00] flex items-center justify-center mb-6 mx-auto overflow-hidden">
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAjVBMVEVSpDUAAAArZRsqYxwAAANWqjdSpTRQoDEnYRgeSRdop0+G1mF9zVuJ12RTrDcJBAQFCAV7w1gkVhlIjS9Gjy0kWhkdRRWN4Wdtvk5OoDFUozhOoi5WpTglXRcoYB5JkjMhSBQcQBRarD0rZRhtpVSE0mV6x1R90GFOmzIoVx0YSg9+wVp+0lsJBgBWqT5sUnT+AAADKElEQVR4nO3d23aaQABGYYgwmCaYE2JFMWqaNk1N3v/xilddS4aVf5QJY7q/a5g128ETARNFAAAAAAAAAAAAAAAAAAAAAIBzZtQNl8bI25qlvOl+AvrGx6jE7ZYmdZhJk7iUt5XncBRT1GNNvarlSUdmOhKHHY8f9WPjiL4qLVYj1VSeSTW5v1BHrQvjcQ2bp9bj+EKlF0bLWh51XDg8aY8qLC81r+vNRB433ajDXm4Kr0epMUWsS+WBU4dRHzwfpXJhEsfyGlaT/eaiwuu7hTEP8kwST2tYeH07pJDCLhRS2B8KKexCIYX9oZDCLhRS2B8KKexCIYX9oZDCLhRS2B8KKexCIYX9oZDCLhRS2F9glOqFcbxNVROXQq/X01Sm+qZ7ki8DetIH/ZFW+tVkRxQutrnoKt/V4hViq4vpTh02n6WVzzWMFumV7Fm/lKt+lkfNXa55PMb2WrR7vl7fq15/qsNe/9p67WtkopfFi8PLx8tcHXfuO1BmTOVQmHl89XBlRJXJ5L4kztRh/T4Hnbitoc/XR1+MwxpSGCYKKQwfhRSGj8KvUDj/SoXN5+zWJ2SnNcysn+iHzvrHdm7I7SgN6duTjXmPLCfQnL4fmvb+Rj8b6d2y/j1tuZ86FNbt/ZsRwjlMJ6OR5Q7JsUOh7azcUx1O4bKZYPsE2kruS2Lb/qNxOIVpWV6WB9brjcMalq+H+5flpgznidjxZwf9nkK7m3AKJzcntlgltxR+HgoppHB4FFJI4fAopJDC4VFIIYXDo5BCCodHIYUUDo9CCikcHoUUUjg8Cr9mYeJ2pYJl2/ALT70UI/TCZoJ3qj9351iYxLcz+W7M2Tkepc0M5cJ8Zjuiwy+Md/Jtk7szLUznosx62dg5FKr7m/MsPPkXByj8TBR+iMLBUfghCgdH4YcoHNx/UPjWzOeAS6Htk3czxFtYhRanfrcI6J6Z1H6Uvqv7m631tFVIa2hdQof/u9Zx41Q4hdn+F6oOzy5d5Zk+wMwqnF9MWuyDWj/KlS/kAbK89QjtH6SwClvTcymc20/BhVMYfbf6zAEAAAAAAAAAAAAAAABC8BcfaY0kWHg/YgAAAABJRU5ErkJggg==">
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 text-center">Setup Server Minecraft</h3>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-[#0CCF00] mt-1 mr-2"></i>
+                            <span>Server Teroptimasi</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-[#0CCF00] mt-1 mr-2"></i>
+                            <span>Plugin & Mod Installation</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-[#0CCF00] mt-1 mr-2"></i>
+                            <span>World Setup dan Setup Proteksi keamanan</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-[#0CCF00] mt-1 mr-2"></i>
+                            <span>Custom Economy System</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-[#0CCF00] mt-1 mr-2"></i>
+                            <span>Setiap Ada Problem, pasti di benerin</span>
+                        </li>
+                    </ul>
+                    <div class="text-center mb-6">
+                        <span class="text-2xl font-bold">Mulai dari</span>
+                        <div class="text-4xl font-bold gradient-text">Rp 200.000</div>
+                    </div>
+                    <button onclick="openModal('orderModal', 'Minecraft Setup')" class="w-full py-3 bg-[#0CCF00] hover:bg-[#0AAC00] text-white rounded-lg transition btn-animate">Pesan Sekarang</button>
+                </div>
+                
+                <!-- Combo Package -->
+                <div class="service-card bg-[#1E1F22] rounded-xl p-8 shadow-lg">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-r from-[#5865F2] to-[#0CCF00] flex items-center justify-center mb-6 mx-auto">
+                        <i class="fas fa-star text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 text-center">Paket Kombo Premium</h3>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-gradient-to-r from-[#5865F2] to-[#0CCF00] mt-1 mr-2"></i>
+                            <span>Mendapatkan Fitur Discord Untuk Siap Pakai</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-gradient-to-r from-[#5865F2] to-[#0CCF00] mt-1 mr-2"></i>
+                            <span>Mendapatkan Fitur Setup siap di pakai</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-gradient-to-r from-[#5865F2] to-[#0CCF00] mt-1 mr-2"></i>
+                            <span>Discord-Minecraft Integration</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-gradient-to-r from-[#5865F2] to-[#0CCF00] mt-1 mr-2"></i>
+                            <span>Setup Server, Melalui MC dan Control Panel</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-gradient-to-r from-[#5865F2] to-[#0CCF00] mt-1 mr-2"></i>
+                            <span>Priority Support</span>
+                        </li>
+                    </ul>
+                    <div class="text-center mb-6">
+                        <span class="text-2xl font-bold">Mulai dari</span>
+                        <div class="text-4xl font-bold gradient-text">Rp 350.000</div>
+                    </div>
+                    <button onclick="openModal('orderModal', 'Combo Package')" class="w-full py-3 bg-gradient-to-r from-[#5865F2] to-[#0CCF00] hover:from-[#4752C4] hover:to-[#0AAC00] text-white rounded-lg transition btn-animate">Pesan Sekarang</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="about" class="py-20 px-6 bg-[#313338] content-hidden">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Mengapa Memilih Kami?</h2>
+                <p class="text-gray-300 max-w-2xl mx-auto">
+                    Kami memberikan pengalaman terbaik dalam setup server Discord dan Minecraft.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="flex flex-col">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 rounded-full bg-[#5865F2] flex items-center justify-center mr-4">
+                            <i class="fas fa-bolt text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Cepat & Efisien</h3>
+                    </div>
+                    <p class="text-gray-300">
+                        Apabila Adanya Keterlambatan, Kami Mohon Maaf. Kami Hanya Melakukan Semaksimal mungkin.
+                    </p>
+                </div>
+                
+                <div class="flex flex-col">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 rounded-full bg-[#0CCF00] flex items-center justify-center mr-4">
+                            <i class="fas fa-shield-alt text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Keamanan Terjamin</h3>
+                    </div>
+                    <p class="text-gray-300">
+                        Sistem keamanan tingkat tinggi untuk melindungi server Anda dari serangan dan exploit.
+                    </p>
+                </div>
+                
+                <div class="flex flex-col">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 rounded-full bg-[#5865F2] flex items-center justify-center mr-4">
+                            <i class="fas fa-headset text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Jadwal Layanan Kami</h3>
+                    </div>
+                    <p class="text-gray-300">
+                        Jam Weekday, Kami dari jam 16:00 PM (Weekday) Hingga 22:00 PM
+                        Jam Weekend, Kami dari Jam 08:00 AM (Weekend) Hingga 22:10 PM
+                    </p>
+                </div>
+                
+                <div class="flex flex-col">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 rounded-full bg-[#0CCF00] flex items-center justify-center mr-4">
+                            <i class="fas fa-cogs text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Kustomisasi Lengkap</h3>
+                    </div>
+                    <p class="text-gray-300">
+                        Apabila adanya tambahan seperti menambahkan beberapa Minigame, RPG, Akan Di Tambahkan harga nya. 
+                        Sesuai Requestnya
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-20 px-6 bg-[#2B2D31] content-hidden">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Paket Harga</h2>
+                <p class="text-gray-300 max-w-2xl mx-auto">
+                    Pilih paket yang sesuai dengan kebutuhan server Anda. Semua paket sudah termasuk maintenance selama 1 bulan.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Basic Package -->
+                <div class="bg-[#1E1F22] rounded-xl p-8 shadow-lg">
+                    <h3 class="text-xl font-bold mb-2">Basic (Sesuai Request)</h3>
+                    <div class="flex items-end mb-6">
+                        <span class="text-4xl font-bold">Rp 150.000</span>
+                        <span class="text-gray-400 ml-2">/projek</span>
+                    </div>
+                    <ul class="space-y-3 mb-8 border-b border-gray-700 pb-6">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-[#5865F2] mr-2 mt-1"></i>
+                            <span>Setup Dasar Server</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-[#5865F2] mr-2 mt-1"></i>
+                            <span>Channel Discord akan di sesuaikan dengan Kategori Request nya</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-[#5865F2] mr-2 mt-1"></i>
+                            <span>Role System Akan di Sesuaikan Dengan Kategori Request nya</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-[#5865F2] mr-2 mt-1"></i>
+                            <span>5 Bot (Include Music,Games,Security)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-times text-gray-500 mr-2 mt-1"></i>
+                            <span class="text-gray-500">Setup Bot</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-times text-gray-500 mr-2 mt-1"></i>
+                            <span class="text-gray-500">Setup Dashboard bot</span>
+                        </li>
+                    </ul>
+                    <button onclick="openModal('orderModal', 'Basic Package')" class="w-full py-3 bg-[#5865F2] hover:bg-[#4752C4] text-white rounded-lg transition btn-animate">Pilih Paket</button>
+                </div>
+                
+                <!-- Standard Package -->
+                <div class="bg-[#1E1F22] rounded-xl p-8 shadow-lg transform scale-105 z-10 border-2 border-[#5865F2]">
+                    <div class="text-center mb-4">
+                        <span class="bg-[#5865F2] text-white text-xs px-3 py-1 rounded-full">POPULAR</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Standard</h3>
+                    <div class="flex items-end mb-6">
+                        <span class="text-4xl font-bold">Rp 250.000</span>
+                        <span class="text-gray-400 ml-2">/projek</span>
+                    </div>
+                    <ul class="space-y-3 mb-8 border-b border-gray-700 pb-6">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-[#5865F2] mr-2 mt-1"></i>
+                            <span>Setup Akan Lengkap dan Sesuai dengan request nya</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-[#5865F2] mr-2 mt-1"></i>
+                            <span>15 Channel/kategori</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-[#5865F2] mr-2 mt-1"></i>
+                            <span>Role System Akan di Sesuaikan Dengan Kategori Request nya</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-[#5865F2] mr-2 mt-1"></i>
+                            <span>13 Bot (Include Music,Games,Economy,Security)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-[#5865F2] mr-2 mt-1"></i>
+                            <span>Setup Bot</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-times text-gray-500 mr-2 mt-1"></i>
+                            <span class="text-gray-500">Setup bot di dashboard</span>
+                        </li>
+                    </ul>
+                    <button onclick="openModal('orderModal', 'Standard Package')" class="w-full py-3 bg-gradient-to-r from-[#5865F2] to-[#0CCF00] hover:from-[#4752C4] hover:to-[#0AAC00] text-white rounded-lg transition btn-animate">Pilih Paket</button>
+                </div>
+                
+                <!-- Premium Package -->
+                <div class="bg-[#1E1F22] rounded-xl p-8 shadow-lg">
+                    <h3 class="text-xl font-bold mb-2">Premium</h3>
+                    <div class="flex items-end mb-6">
+                        <span class="text-4xl font-bold">Rp 400.000</span>
+                        <span class="text-gray-400 ml-2">/projek</span>
+                    </div>
+                    <ul class="space-y-3 mb-8 border-b border-gray-700 pb-6">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-[#5865F2] mr-2 mt-1"></i>
+                            <span>Setup Premium Server</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-[#5865F2] mr-2 mt-1"></i>
+                            <span>Channel/Kategori Unlimited</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-[#5865F2] mr-2 mt-1"></i>
+                            <span>Custom Role System</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-[#5865F2] mr-2 mt-1"></i>
+                            <span>3 Bot Music/Fun</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-[#5865F2] mr-2 mt-1"></i>
+                            <span>Advanced Auto-Mod</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-[#5865F2] mr-2 mt-1"></i>
+                            <span>Custom Dashboard</span>
+                        </li>
+                    </ul>
+                    <button onclick="openModal('orderModal', 'Premium Package')" class="w-full py-3 bg-[#0CCF00] hover:bg-[#0AAC00] text-white rounded-lg transition btn-animate">Pilih Paket</button>
+                </div>
+            </div>
+            
+            <div class="mt-12 bg-[#1E1F22] rounded-xl p-8 shadow-lg">
+                <h3 class="text-xl font-bold mb-4 text-center">Custom Package</h3>
+                <p class="text-gray-300 text-center mb-6">
+                    Butuh fitur khusus yang tidak ada di paket kami? Kami bisa membuatkan paket khusus sesuai kebutuhan Anda!
+                </p>
+                <div class="text-center">
+                    <button onclick="openModal('contactModal')" class="px-8 py-3 bg-gradient-to-r from-[#5865F2] to-[#0CCF00] hover:from-[#4752C4] hover:to-[#0AAC00] text-white rounded-lg transition btn-animate">Ajukan Custom Order</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-20 px-6 bg-[#313338] content-hidden">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Apa Kata Klien Kami?</h2>
+                <p class="text-gray-300 max-w-2xl mx-auto">
+                    Lihat testimoni dari klien yang telah menggunakan layanan kami.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-[#1E1F22] rounded-xl p-6 shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="Foto profil klien laki-laki dengan latar belakang biru" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold">Andi Pratama</h4>
+                            <span class="text-sm text-gray-400">Komunitas Gaming</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4">
+                        "Server Discord kami sekarang jauh lebih terorganisir dan menarik setelah menggunakan layanan VinzzHost. Tim mereka sangat profesional!"
+                    </p>
+                    <div class="flex text-yellow-400 mb-2">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-[#1E1F22] rounded-xl p-6 shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80" alt="Foto profil perempuan dengan rambut panjang dan latar belakang ungu" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold">Siti Rahayu</h4>
+                            <span class="text-sm text-gray-400">E-Sports Team</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4">
+                        "Server Minecraft kami sekarang berjalan dengan sangat lancar. Tidak ada lagi lag dan semua plugin bekerja sempurna. Terima kasih VinzzHost!"
+                    </p>
+                    <div class="flex text-yellow-400 mb-2">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-[#1E1F22] rounded-xl p-6 shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="Foto profil klien laki-laki dengan kacamata dan latar belakang hijau" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold">Budi Santoso</h4>
+                            <span class="text-sm text-gray-400">Komunitas Streaming</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4">
+                        "Dari semua layanan setup server yang pernah saya coba, VinzzHost yang terbaik! Support mereka cepat tanggap dan hasilnya memuaskan."
+                    </p>
+                    <div class="flex text-yellow-400 mb-2">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 px-6 bg-[#2B2D31] content-hidden">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Hubungi Kami</h2>
+                <p class="text-gray-300 max-w-2xl mx-auto">
+                    Punya pertanyaan atau ingin berkonsultasi? Silakan hubungi kami melalui form berikut.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <input type="text" id="contactName" class="form-input" required>
+                            <label for="contactName" class="floating-label">Nama Lengkap</label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="email" id="contactEmail" class="form-input" required>
+                            <label for="contactEmail" class="floating-label">Alamat Email</label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="text" id="contactSubject" class="form-input" required>
+                            <label for="contactSubject" class="floating-label">Subjek</label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <textarea id="contactMessage" rows="5" class="form-input" required></textarea>
+                            <label for="contactMessage" class="floating-label">Pesan Anda</label>
+                        </div>
+                        
+                        <button type="submit" class="w-full py-3 bg-[#5865F2] hover:bg-[#4752C4] text-white rounded-lg transition btn-animate">Kirim Pesan</button>
+                    </form>
+                </div>
+                
+                <div>
+                    <div class="bg-[#1E1F22] rounded-xl p-8 h-full">
+                        <h3 class="text-xl font-bold mb-6">Informasi Kontak</h3>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 rounded-full bg-[#5865F2] flex items-center justify-center mr-4 mt-1">
+                                    <i class="fas fa-envelope text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold">Email</h4>
+                                    <p class="text-gray-300">support@Vinzznet.id</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 rounded-full bg-[#0CCF00] flex items-center justify-center mr-4 mt-1">
+                                    <i class="fab fa-whatsapp text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold">WhatsApp</h4>
+                                    <p class="text-gray-300">Belum Tersedia</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 rounded-full bg-[#5865F2] flex items-center justify-center mr-4 mt-1">
+                                    <i class="fab fa-discord text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold">Discord</h4>
+                                    <p class="text-gray-300">vinzwood</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 rounded-full bg-[#0CCF00] flex items-center justify-center mr-4 mt-1">
+                                    <i class="fas fa-map-marker-alt text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold">Negara</h4>
+                                    <p class="text-gray-300">Indonesia</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#1E1F22] py-12 px-6 content-hidden">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-[#5865F2] to-[#0CCF00] flex items-center justify-center mr-2">
+                            <i class="fab fa-discord text-white text-sm"></i>
+                        </div>
+                        <span class="font-bold">Vinzzwood</span>
+                    </div>
+                    <p class="text-gray-300 text-sm">
+                        Layanan profesional setup server Discord dan Minecraft dengan kualitas terbaik dan harga terjangkau.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Tautan Cepat</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-300 hover:text-[#5865F2] transition text-sm">Beranda</a></li>
+                        <li><a href="#services" class="text-gray-300 hover:text-[#5865F2] transition text-sm">Layanan</a></li>
+                        <li><a href="#about" class="text-gray-300 hover:text-[#5865F2] transition text-sm">Tentang</a></li>
+                        <li><a href="#pricing" class="text-gray-300 hover:text-[#5865F2] transition text-sm">Harga</a></li>
+                        <li><a href="#contact" class="text-gray-300 hover:text-[#5865F2] transition text-sm">Kontak</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Layanan</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-300 hover:text-[#5865F2] transition text-sm">Setup Discord</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-[#5865F2] transition text-sm">Setup Minecraft</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-[#5865F2] transition text-sm">Bot Development</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-[#5865F2] transition text-sm">Plugin Custom</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-[#5865F2] transition text-sm">Server Maintenance</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Media Sosial</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-[#5865F2] flex items-center justify-center hover:bg-[#4752C4] transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-[#1DA1F2] flex items-center justify-center hover:bg-[#1A8CD8] transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-[#E1306C] flex items-center justify-center hover:bg-[#C1225B] transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-[#0CCF00] flex items-center justify-center hover:bg-[#0AAC00] transition">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 pt-8 text-center">
+                <p class="text-gray-300 text-sm">
+                    &copy; 2023 VincentWeb. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 modal">
+        <div class="bg-[#1E1F22] rounded-xl p-8 max-w-md w-full mx-4 relative">
+            <button onclick="closeModal('loginModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            
+            <div class="text-center mb-6">
+                <h3 class="text-2xl font-bold">Masuk ke Akun</h3>
+                <p class="text-gray-400 mt-2">Selamat datang kembali di VinzzHost</p>
+            </div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <input type="email" id="loginEmail" class="form-input" required>
+                    <label for="loginEmail" class="floating-label">Alamat Email</label>
+                </div>
+                
+                <div class="form-group">
+                    <input type="password" id="loginPassword" class="form-input" required>
+                    <label for="loginPassword" class="floating-label">Kata Sandi</label>
+                </div>
+                
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="rememberMe" class="mr-2">
+                        <label for="rememberMe" class="text-sm text-gray-300">Ingat saya</label>
+                    </div>
+                    <a href="#" class="text-sm text-[#5865F2] hover:underline">Lupa kata sandi?</a>
+                </div>
+                
+                <button type="submit" class="w-full py-3 bg-[#5865F2] hover:bg-[#4752C4] text-white rounded-lg transition btn-animate mb-4">Masuk</button>
+                
+                <p class="text-center text-gray-400">
+                    Belum punya akun? 
+                    <a href="#" onclick="closeModal('loginModal'); openModal('registerModal')" class="text-[#5865F2] hover:underline">Daftar sekarang</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 modal">
+        <div class="bg-[#1E1F22] rounded-xl p-8 max-w-md w-full mx-4 relative">
+            <button onclick="closeModal('registerModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            
+            <div class="text-center mb-6">
+                <h3 class="text-2xl font-bold">Buat Akun Baru</h3>
+                <p class="text-gray-400 mt-2">Bergabunglah dengan VinzzHost sekarang</p>
+            </div>
+            
+            <form id="registerForm">
+                <div class="form-group">
+                    <input type="text" id="registerName" class="form-input" required>
+                    <label for="registerName" class="floating-label">Nama Lengkap</label>
+                </div>
+                
+                <div class="form-group">
+                    <input type="email" id="registerEmail" class="form-input" required>
+                    <label for="registerEmail" class="floating-label">Alamat Email</label>
+                </div>
+                
+                <div class="form-group">
+                    <input type="password" id="registerPassword" class="form-input" required>
+                    <label for="registerPassword" class="floating-label">Kata Sandi</label>
+                </div>
+                
+                <div class="form-group">
+                    <input type="password" id="registerConfirmPassword" class="form-input" required>
+                    <label for="registerConfirmPassword" class="floating-label">Konfirmasi Kata Sandi</label>
+                </div>
+                
+                <div class="flex items-center mb-6">
+                    <input type="checkbox" id="agreeTerms" class="mr-2" required>
+                    <label for="agreeTerms" class="text-sm text-gray-300">
+                        Saya setuju dengan <a href="#" class="text-[#5865F2] hover:underline">Syarat & Ketentuan</a>
+                    </label>
+                </div>
+                
+                <button type="submit" class="w-full py-3 bg-[#5865F2] hover:bg-[#4752C4] text-white rounded-lg transition btn-animate mb-4">Daftar</button>
+                
+                <p class="text-center text-gray-400">
+                    Sudah punya akun? 
+                    <a href="#" onclick="closeModal('registerModal'); openModal('loginModal')" class="text-[#5865F2] hover:underline">Masuk sekarang</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Order Modal -->
+    <div id="orderModal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 modal">
+        <div class="bg-[#1E1F22] rounded-xl p-8 max-w-md w-full mx-4 relative">
+            <button onclick="closeModal('orderModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            
+            <div class="text-center mb-6">
+                <h3 class="text-2xl font-bold"><span id="serviceTitle">Pesan Layanan</span></h3>
+                <p class="text-gray-400 mt-2">Isi form berikut untuk memesan layanan kami</p>
+            </div>
+            
+            <form id="orderForm">
+                <div class="form-group">
+                    <input type="text" id="orderName" class="form-input" required>
+                    <label for="orderName" class="floating-label">Nama Lengkap</label>
+                </div>
+                
+                <div class="form-group">
+                    <input type="email" id="orderEmail" class="form-input" required>
+                    <label for="orderEmail" class="floating-label">Alamat Email</label>
+                </div>
+                
+                <div class="form-group">
+                    <input type="text" id="orderDiscord" class="form-input" required>
+                    <label for="orderDiscord" class="floating-label">Tag Discord (contoh: username#1234)</label>
+                </div>
+                
+                <div class="form-group">
+                    <select id="orderPackage" class="form-input" required>
+                        <option value="" disabled selected></option>
+                        <option value="Basic">Basic</option>
+                        <option value="Standard">Standard</option>
+                        <option value="Premium">Premium</option>
+                        <option value="Custom">Custom Request</option>
+                    </select>
+                    <label for="orderPackage" class="floating-label">Pilih Paket</label>
+                </div>
+                
+                <div class="form-group">
+                    <textarea id="orderNotes" rows="3" class="form-input"></textarea>
+                    <label for="orderNotes" class="floating-label">Catatan Tambahan (opsional)</label>
+                </div>
+                
+                <button type="submit" class="w-full py-3 bg-[#5865F2] hover:bg-[#4752C4] text-white rounded-lg transition btn-animate mb-4">Pesan Sekarang</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 modal">
+        <div class="bg-[#1E1F22] rounded-xl p-8 max-w-md w-full mx-4 text-center">
+            <div class="w-16 h-16 rounded-full bg-[#0CCF00] flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-check text-white text-2xl"></i>
+            </div>
+            
+            <h3 class="text-2xl font-bold mb-3" id="successTitle">Sukses!</h3>
+            <p class="text-gray-300 mb-6" id="successMessage">Pesanan Anda telah berhasil dikirim. Kami akan menghubungi Anda segera.</p>
+            
+            <button onclick="closeModal('successModal')" class="px-8 py-3 bg-[#5865F2] hover:bg-[#4752C4] text-white rounded-lg transition btn-animate">Tutup</button>
+        </div>
+    </div>
+
+    <script>
+        // Loader Animation
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('loader').style.opacity = '0';
+                document.getElementById('loader').style.visibility = 'hidden';
+                
+                // Animate content sections
+                document.querySelectorAll('.content-hidden').forEach(function(element) {
+                    setTimeout(function() {
+                        element.classList.add('content-visible');
+                    }, 200);
+                });
+            }, 1500);
+        });
+        
+        // Mobile Menu Toggle
+        document.getElementById('mobileMenuButton').addEventListener('click', function() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+            this.innerHTML = menu.classList.contains('hidden') 
+                ? '<i class="fas fa-bars text-xl"></i>' 
+                : '<i class="fas fa-times text-xl"></i>';
+        });
+        
+        // Modal Functions
+        function openModal(modalId, serviceName = null) {
+            const modal = document.getElementById(modalId);
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            if (modalId === 'orderModal' && serviceName) {
+                document.getElementById('serviceTitle').textContent = `Pesan ${serviceName}`;
+            }
+        }
+        
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            
+            // Reset forms when closing
+            if (modalId === 'loginModal') {
+                document.getElementById('loginForm').reset();
+            } else if (modalId === 'registerModal') {
+                document.getElementById('registerForm').reset();
+            } else if (modalId === 'orderModal') {
+                document.getElementById('orderForm').reset();
+            }
+        }
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal')) {
+                const modals = document.querySelectorAll('.modal');
+                modals.forEach(function(modal) {
+                    if (modal.classList.contains('active')) {
+                        modal.classList.remove('active');
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+            }
+        });
+        
+        // Form Submissions
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            closeModal('loginModal');
+            document.getElementById('successTitle').textContent = 'Login Berhasil!';
+            document.getElementById('successMessage').textContent = 'Anda telah berhasil masuk ke akun NexusHost.';
+            openModal('successModal');
+        });
+        
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            closeModal('registerModal');
+            document.getElementById('successTitle').textContent = 'Pendaftaran Berhasil!';
+            document.getElementById('successMessage').textContent = 'Akun NexusHost Anda telah berhasil dibuat. Silakan cek email untuk verifikasi.';
+            openModal('successModal');
+        });
+        
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            closeModal('orderModal');
+            document.getElementById('successTitle').textContent = 'Pesanan Diterima!';
+            document.getElementById('successMessage').textContent = 'Terima kasih atas pesanan Anda. Tim kami akan menghubungi Anda dalam 1x24 jam.';
+            openModal('successModal');
+        });
+        
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('successTitle').textContent = 'Pesan Terkirim!';
+            document.getElementById('successMessage').textContent = 'Terima kasih telah menghubungi kami. Kami akan membalas pesan Anda secepatnya.';
+            openModal('successModal');
+            this.reset();
+        });
+        
+        // Smooth Scrolling for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                
+                // Close mobile menu if open
+                const mobileMenu = document.getElementById('mobileMenu');
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                    document.getElementById('mobileMenuButton').innerHTML = '<i class="fas fa-bars text-xl"></i>';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
